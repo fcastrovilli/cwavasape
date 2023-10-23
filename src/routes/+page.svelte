@@ -21,6 +21,7 @@
 	$: bookmark = data.bookmark;
 	let btn: HTMLButtonElement;
 	let y = 0;
+	let touchStart: number = 0;
 	// $: console.log('y:', y);
 
 	function refetch() {
@@ -55,6 +56,23 @@
 					refetch();
 				} else if (e.deltaY >= 0 && y !== pins.length - gap) y += 1;
 				if (e.deltaY <= 0 && y > 0) y -= 1;
+			}}
+			on:touchstart={(e) => {
+				touchStart = e.changedTouches[0].clientY;
+			}}
+			on:touchmove={(e) => {
+				// calculate touch direction on Y axis
+				if (!pins) return;
+				const touch = e.changedTouches[0];
+				const direction = touchStart < touch.clientY ? 'up' : 'down';
+				if (direction == 'up' && y == 0) return;
+				if (direction == 'down' && y >= pins.length - 1) return;
+				if (direction == 'down' && y == pins.length - gap) {
+					y = pins.length - gap + 1;
+					// console.log('pinslength:', pins.length, 'y:', y, 'refetching');
+					refetch();
+				} else if (direction == 'down' && y !== pins.length - gap) y += 1;
+				if (direction == 'up' && y > 0) y -= 1;
 			}}
 		>
 			<form
