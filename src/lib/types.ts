@@ -77,7 +77,25 @@ export type PinResponse = {
 	is_quick_promotable: boolean;
 	video_status: string | null;
 	is_video: boolean;
-	rich_summary: string | null;
+	rich_summary: {
+		products: string[];
+		type_name: string;
+		actions: string[];
+		url: string;
+		display_name: string;
+		apple_touch_icon_images: {
+			orig: string;
+		};
+		display_description: string;
+		id: string;
+		site_name: string;
+		apple_touch_icon_link: string;
+		favicon_images: {
+			orig: string;
+		};
+		type: string;
+		favicon_link: string;
+	};
 	shopping_flags: string[];
 	comment_count: number;
 	has_required_attribution_provider: boolean;
