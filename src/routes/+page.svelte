@@ -1,7 +1,9 @@
 <script lang="ts">
+	import Canvas from '$lib/components/canvas.svelte';
 	import { browser } from '$app/environment';
 	import { enhance } from '$app/forms';
 	import type { PinResponse } from '$lib/types';
+	import { scrollPosition } from '$lib/stores';
 
 	export let data;
 	let pins: PinResponse[] | undefined = data.pins;
@@ -12,8 +14,17 @@
 		if (new_pins && new_pins.length > 0 && browser) {
 			new_pins.forEach((pin, i) => {
 				const img = new Image();
-				img.src = pin.images['736x'].url;
+				img.src = pin.images['orig'].url;
+				//get datauri from img
+				// const canvas = document.createElement('canvas');
+				// const ctx = canvas.getContext('2d');
+				// canvas.width = pin.images['orig'].width;
+				// canvas.height = pin.images['orig'].height;
+				// ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+				// const datauri = canvas.toDataURL();
 				img.id = i.toString();
+				img.width = pin.images['orig'].width;
+				img.height = pin.images['orig'].height;
 				images.push(img);
 			});
 		}
@@ -22,7 +33,7 @@
 	let btn: HTMLButtonElement;
 	let y = 0;
 	let touchStart: number = 0;
-	// $: console.log('y:', y);
+	$: $scrollPosition = y;
 
 	function refetch() {
 		btn.click();
@@ -61,7 +72,6 @@
 				touchStart = e.changedTouches[0].clientY;
 			}}
 			on:touchmove={(e) => {
-				// calculate touch direction on Y axis
 				if (!pins) return;
 				const touch = e.changedTouches[0];
 				const direction = touchStart < touch.clientY ? 'up' : 'down';
@@ -97,14 +107,12 @@
 				<button bind:this={btn} type="submit" class="hidden" />
 			</form>
 			{#if pins[y] && images.length > 0}
-				<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full">
-					<img class="h-screen w-screen object-contain" src={images[y].src} alt="" />
-				</div>
+				<Canvas {images} />
 			{/if}
 		</div>
 	{:else}
 		<div class="flex justify-center items-center h-screen">
-			<p>no data found</p>
+			<p class="text-white">no data found</p>
 		</div>
 	{/if}
 {/if}
