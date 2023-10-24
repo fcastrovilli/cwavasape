@@ -17,7 +17,7 @@
 	let btn: HTMLButtonElement;
 	let y: number = 0;
 	$: $scrollPosition = y;
-	$: url = '/api?url=' + $all_pins[$scrollPosition].images['orig'].url;
+	$: url = '/images?url=' + $all_pins[$scrollPosition].images['orig'].url;
 
 	//////////////////////////
 	onMount(async () => {
