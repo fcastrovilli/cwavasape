@@ -3,6 +3,10 @@ import type { PinResponse } from '$lib/types';
 import type { Actions, ServerLoad } from '@sveltejs/kit';
 import { all_pins } from '$lib/stores';
 
+export const config: import('@sveltejs/adapter-vercel').Config = {
+	runtime: 'edge'
+};
+
 /** @type {import('@sveltejs/kit').ServerLoad} */
 export const load: ServerLoad = async ({ fetch }) => {
 	const searchParams = new URLSearchParams();

@@ -60,7 +60,7 @@
 			labelColor: 'white'
 		});
 		analyzed_img.src = painted.toDataURL();
-		// analyzed_img.style.opacity = '0.5';
+		analyzed_img.style.opacity = '0.7';
 		// document.getElementById('painted').src = painted.toDataURL();
 
 		let rois = roiManager.getRois({ positive: false, minSurface: 10 });
