@@ -209,8 +209,8 @@ export type Analysis = {
 };
 
 export type MusicData = {
-	pitch: number;
-	duration: number | string;
-	midiNote: number;
 	note: string;
+	duration: number;
+	time: number;
+	velocity: number;
 };

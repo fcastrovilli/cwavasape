@@ -3,8 +3,8 @@
 	import { all_pins, scrollPosition, bookmark } from '$lib/stores';
 	import { onMount } from 'svelte';
 	import type { MusicData } from '$lib/types';
-	import { Image as imagejs } from 'image-js';
-	import { translateRoisToMusic } from '$lib/music/map';
+	import { type Roi, Image as imagejs } from 'image-js';
+	import { mapROItoSYNTH, translateRoisToMusic } from '$lib/music/map';
 	import * as Tone from 'tone';
 
 	let synth: Tone.PolySynth;
@@ -46,29 +46,47 @@
 	}
 
 	async function analyze() {
-		let image = await imagejs.load(url);
-		let gaussian = image.grey().gaussianFilter({ radius: 10 });
+		let toAnalyze = await imagejs.load(url);
+		let gaussian = toAnalyze.grey().gaussianFilter({ radius: 8 });
 		let mask = gaussian.mask({ threshold: 0.5 });
-		let roiManager = image.getRoiManager();
+		let roiManager = toAnalyze.getRoiManager();
 		roiManager.fromMask(mask);
 		let painted = roiManager.paint({
 			// @ts-ignore
 			distinctColor: true,
-			positive: false,
+			positive: true,
+			negative: true,
 			alpha: 127,
 			labelProperty: 'surface',
-			labelColor: 'white'
+			labelColor: 'white',
+			unit: 'px'
 		});
 		analyzed_img.src = painted.toDataURL();
 		analyzed_img.style.opacity = '0.7';
-		// document.getElementById('painted').src = painted.toDataURL();
 
-		let rois = roiManager.getRois({ positive: false, minSurface: 10 });
-		const musicData: MusicData[] = translateRoisToMusic(rois);
-		musicData.forEach((note) => {
-			synth.triggerAttackRelease(note.note, note.duration, Tone.now() + '4n');
-		});
-		console.log(musicData);
+		let raw_rois = roiManager.getRois({ positive: true, minSurface: 10, negative: true });
+		// for (let i = 0; i < rois.length; i++) {
+		// 	const note = mapROItoSYNTH(rois[i]);
+		// 	console.log(note);
+		// 	if (note.duration > 15) note.duration = 15;
+		// 	synth.triggerAttackRelease(
+		// 		note.notes,
+		// 		note.duration * 0.9,
+		// 		note.time,
+		// 		note.velocity
+		// 	);
+		// }
+		// console.log(rois);
+		let musicData: MusicData[] = translateRoisToMusic(raw_rois);
+		for (let i = 0; i < musicData.length; i++) {
+			const note = musicData[i];
+			synth.triggerAttackRelease(
+				note.note,
+				note.duration * 0.09,
+				Tone.now() + i * 0.09,
+				note.velocity
+			);
+		}
 	}
 
 	function onKeyDown(e: KeyboardEvent) {
