@@ -190,3 +190,27 @@ export type PinResponse = {
 		};
 	};
 };
+
+export type Analysis = {
+	isSameDimensions: boolean;
+	dimensionDifference: {
+		width: number;
+		height: number;
+	};
+	rawMisMatchPercentage: number;
+	misMatchPercentage: string;
+	diffBounds: {
+		top: number;
+		left: number;
+		bottom: number;
+		right: number;
+	};
+	analysisTime: number;
+};
+
+export type MusicData = {
+	pitch: number;
+	duration: number | string;
+	midiNote: number;
+	note: string;
+};

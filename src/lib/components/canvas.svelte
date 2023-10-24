@@ -7,14 +7,21 @@
 	let img: HTMLImageElement = images[$scrollPosition];
 	onMount(() => {
 		ctx = canvas.getContext('2d');
+		img = images[$scrollPosition];
+		img.onload = () => {
+			draw();
+		};
 	});
 	$: {
 		if (ctx) {
 			img = images[$scrollPosition];
-			canvas.width = img.width;
-			canvas.height = img.height;
-			ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+			draw();
 		}
+	}
+	function draw() {
+		canvas.width = img.width;
+		canvas.height = img.height;
+		ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
 	}
 </script>
 

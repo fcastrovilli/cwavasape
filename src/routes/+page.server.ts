@@ -1,6 +1,7 @@
 import { BOARD_ID, PAGE_SIZE, SOURCE_URL, BASE_URL } from '$env/static/private';
 import type { PinResponse } from '$lib/types';
 import type { Actions, ServerLoad } from '@sveltejs/kit';
+import { all_pins } from '$lib/stores';
 
 /** @type {import('@sveltejs/kit').ServerLoad} */
 export const load: ServerLoad = async ({ fetch }) => {
@@ -23,9 +24,10 @@ export const load: ServerLoad = async ({ fetch }) => {
 		const res = await fetch(url);
 		if (res.ok) {
 			const bookmark = (await res.clone().json()).resource_response.bookmark;
-			const pins: PinResponse[] = (await res.json()).resource_response.data;
+			const init_pins: PinResponse[] = (await res.json()).resource_response.data;
+			all_pins.update(() => [...init_pins]);
 			return {
-				pins,
+				pins: init_pins,
 				bookmark
 			};
 		}
@@ -63,6 +65,7 @@ export const actions: Actions = {
 			if (res.ok) {
 				const new_bookmark = (await res.clone().json()).resource_response.bookmark;
 				const new_pins: PinResponse[] = (await res.json()).resource_response.data;
+				all_pins.update((pins) => [...pins, ...new_pins]);
 				return {
 					new_pins,
 					new_bookmark

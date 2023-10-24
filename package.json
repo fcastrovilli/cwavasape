@@ -30,5 +30,10 @@
     "lint": "prettier --plugin-search-dir . --check . && eslint .",
     "format": "prettier --plugin-search-dir . --write ."
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "image-js": "^0.35.5",
+    "resemblejs": "^5.0.0",
+    "tone": "^14.7.77"
+  }
 }

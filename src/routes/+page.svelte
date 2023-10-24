@@ -3,8 +3,8 @@
 	import { browser } from '$app/environment';
 	import { enhance } from '$app/forms';
 	import type { PinResponse } from '$lib/types';
-	import { scrollPosition } from '$lib/stores';
-
+	import { scrollPosition, all_pins } from '$lib/stores';
+	// $: console.log($all_pins);
 	export let data;
 	let pins: PinResponse[] | undefined = data.pins;
 	let new_pins: PinResponse[] | undefined = pins;
@@ -15,13 +15,6 @@
 			new_pins.forEach((pin, i) => {
 				const img = new Image();
 				img.src = pin.images['orig'].url;
-				//get datauri from img
-				// const canvas = document.createElement('canvas');
-				// const ctx = canvas.getContext('2d');
-				// canvas.width = pin.images['orig'].width;
-				// canvas.height = pin.images['orig'].height;
-				// ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
-				// const datauri = canvas.toDataURL();
 				img.id = i.toString();
 				img.width = pin.images['orig'].width;
 				img.height = pin.images['orig'].height;
