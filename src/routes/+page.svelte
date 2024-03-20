@@ -14,10 +14,10 @@
 		if (new_pins && new_pins.length > 0 && browser) {
 			new_pins.forEach((pin, i) => {
 				const img = new Image();
-				img.src = pin.images['orig'].url;
+				img.src = pin.images['474x'].url;
 				img.id = i.toString();
-				img.width = pin.images['orig'].width;
-				img.height = pin.images['orig'].height;
+				img.width = pin.images['474x'].width;
+				img.height = pin.images['474x'].height;
 				images.push(img);
 			});
 		}
