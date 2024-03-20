@@ -2,12 +2,12 @@
 	import { enhance } from '$app/forms';
 	import { all_pins, scrollPosition, bookmark } from '$lib/stores';
 	import { onMount } from 'svelte';
-	import type { MusicData } from '$lib/types';
+	// import type { MusicData } from '$lib/types';
 	import { type Roi, Image as imagejs } from 'image-js';
-	import { mapROItoSYNTH, translateRoisToMusic } from '$lib/music/map';
-	import * as Tone from 'tone';
+	// import { mapROItoSYNTH, translateRoisToMusic } from '$lib/music/map';
+	// import * as Tone from 'tone';
 
-	let synth: Tone.PolySynth;
+	// let synth: Tone.PolySynth;
 
 	let canvas: HTMLCanvasElement;
 	let analyzed_img: HTMLImageElement;
@@ -21,7 +21,7 @@
 
 	//////////////////////////
 	onMount(async () => {
-		synth = new Tone.PolySynth().toDestination();
+		// synth = new Tone.PolySynth().toDestination();
 		ctx = canvas.getContext('2d');
 		img = new Image();
 		img.src = url;
@@ -65,28 +65,16 @@
 		analyzed_img.style.opacity = '0.7';
 
 		let raw_rois = roiManager.getRois({ positive: true, minSurface: 10, negative: true });
-		// for (let i = 0; i < rois.length; i++) {
-		// 	const note = mapROItoSYNTH(rois[i]);
-		// 	console.log(note);
-		// 	if (note.duration > 15) note.duration = 15;
+		// let musicData: MusicData[] = translateRoisToMusic(raw_rois);
+		// for (let i = 0; i < musicData.length; i++) {
+		// 	const note = musicData[i];
 		// 	synth.triggerAttackRelease(
-		// 		note.notes,
-		// 		note.duration * 0.9,
-		// 		note.time,
+		// 		note.note,
+		// 		note.duration * 0.09,
+		// 		Tone.now() + i * 0.09,
 		// 		note.velocity
 		// 	);
 		// }
-		// console.log(rois);
-		let musicData: MusicData[] = translateRoisToMusic(raw_rois);
-		for (let i = 0; i < musicData.length; i++) {
-			const note = musicData[i];
-			synth.triggerAttackRelease(
-				note.note,
-				note.duration * 0.09,
-				Tone.now() + i * 0.09,
-				note.velocity
-			);
-		}
 	}
 
 	function onKeyDown(e: KeyboardEvent) {
