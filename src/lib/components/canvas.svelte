@@ -21,6 +21,7 @@
 		if (ctx) {
 			img = images[$scrollPosition];
 			if (analysis) {
+				url = '';
 				setTimeout(() => {
 					if ($scrollPosition === images.indexOf(img)) {
 						analyze(src_url).then((result) => {
@@ -51,13 +52,17 @@
 >
 	analyze
 </button>
-<div class="h-screen w-screen flex justify-center items-center">
-	<canvas bind:this={canvas} class="max-h-screen object-contain h-full w-full" />
-	{#if analysis}
-		<div class="absolute max-h-screen h-full w-full">
-			{#if url}
-				<img src={url} class="opacity-50 max-h-screen object-contain h-full w-full" alt="" />
+{#if images[$scrollPosition].src}
+	<a href={images[$scrollPosition].src} rel="nofollow" target="_blank">
+		<div class="h-screen w-screen flex justify-center items-center">
+			<canvas bind:this={canvas} class="max-h-screen object-contain h-full w-full" />
+			{#if analysis && url}
+				<img
+					src={url}
+					class="opacity-70 absolute max-h-screen object-contain h-full w-full"
+					alt=""
+				/>
 			{/if}
 		</div>
-	{/if}
-</div>
+	</a>
+{/if}

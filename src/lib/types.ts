@@ -207,10 +207,3 @@ export type Analysis = {
 	};
 	analysisTime: number;
 };
-
-export type MusicData = {
-	note: string;
-	duration: number;
-	time: number;
-	velocity: number;
-};
