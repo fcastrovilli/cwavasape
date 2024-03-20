@@ -6,7 +6,6 @@
 	let canvas: HTMLCanvasElement;
 	let ctx: CanvasRenderingContext2D | null = null;
 	let img: HTMLImageElement = images[$scrollPosition];
-	// let analyzed_img: HTMLImageElement;
 	let analysis: boolean = false;
 	$: src_url = '/images?url=' + images[$scrollPosition].src;
 	$: url = '';
@@ -22,11 +21,15 @@
 		if (ctx) {
 			img = images[$scrollPosition];
 			if (analysis) {
-				analyze(src_url).then((result) => {
-					if (result) {
-						url = result.url;
+				setTimeout(() => {
+					if ($scrollPosition === images.indexOf(img)) {
+						analyze(src_url).then((result) => {
+							if (result) {
+								url = result.url;
+							}
+						});
 					}
-				});
+				}, 400);
 			}
 			draw();
 		}
