@@ -3,8 +3,8 @@ import { Image as imagejs } from 'image-js';
 export async function analyze(url: string) {
 	if (!url) return;
 	const toAnalyze = await imagejs.load(url);
-	const gaussian = toAnalyze.grey().gaussianFilter({ radius: 8 });
-	const mask = gaussian.mask({ threshold: 0.4 });
+	const gaussian = toAnalyze.grey().gaussianFilter({ radius: 6 });
+	const mask = gaussian.mask({ threshold: 0.6 });
 	const roiManager = toAnalyze.getRoiManager();
 	roiManager.fromMask(mask);
 	const painted = roiManager.paint({
