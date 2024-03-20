@@ -1,14 +1,15 @@
 <script lang="ts">
-	import { scrollPosition,all_pins } from '$lib/stores';
+	import { scrollPosition } from '$lib/stores';
 	import { onMount } from 'svelte';
 	import { analyze } from '$lib/utils';
 	export let images: HTMLImageElement[] = [];
 	let canvas: HTMLCanvasElement;
 	let ctx: CanvasRenderingContext2D | null = null;
 	let img: HTMLImageElement = images[$scrollPosition];
-	let analyzed_img: HTMLImageElement;
+	// let analyzed_img: HTMLImageElement;
 	let analysis: boolean = false;
-	$: url = '/images?url=' + images[$scrollPosition].src;
+	$: src_url = '/images?url=' + images[$scrollPosition].src;
+	$: url = '';
 
 	onMount(() => {
 		ctx = canvas.getContext('2d');
@@ -20,10 +21,14 @@
 	$: {
 		if (ctx) {
 			img = images[$scrollPosition];
-			draw();
-			if(analysis) {
-				analyze(analyzed_img,url);
+			if (analysis) {
+				analyze(src_url).then((result) => {
+					if (result) {
+						url = result.url;
+					}
+				});
 			}
+			draw();
 		}
 	}
 	function draw() {
@@ -33,16 +38,23 @@
 	}
 </script>
 
-<button on:click={() => (analysis = !analysis)} class:text-black={analysis} class:bg-white={analysis} class="z-50 fixed top-5 right-5 p-2 rounded-lg border border-white text-white align-middle">
+<button
+	on:click={() => (analysis = !analysis)}
+	class:text-black={analysis}
+	class:bg-white={analysis}
+	class:bg-black={!analysis}
+	class:text-white={!analysis}
+	class="z-50 absolute top-5 right-5 p-2 rounded-lg border border-white align-middle"
+>
 	analyze
 </button>
 <div class="h-screen w-screen flex justify-center items-center">
 	<canvas bind:this={canvas} class="max-h-screen object-contain h-full w-full" />
 	{#if analysis}
-		<img
-			bind:this={analyzed_img}
-			class="absolute max-h-screen object-contain h-full w-full"
-			alt=""
-		/>
+		<div class="absolute max-h-screen h-full w-full">
+			{#if url}
+				<img src={url} class="opacity-50 max-h-screen object-contain h-full w-full" alt="" />
+			{/if}
+		</div>
 	{/if}
 </div>
