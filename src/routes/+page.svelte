@@ -3,8 +3,7 @@
 	import { browser } from '$app/environment';
 	import { enhance } from '$app/forms';
 	import type { PinResponse } from '$lib/types';
-	import { scrollPosition, all_pins } from '$lib/stores';
-	// $: console.log($all_pins);
+	import { scrollPosition } from '$lib/stores';
 	export let data;
 	let pins: PinResponse[] | undefined = data.pins;
 	let new_pins: PinResponse[] | undefined = pins;
@@ -14,10 +13,10 @@
 		if (new_pins && new_pins.length > 0 && browser) {
 			new_pins.forEach((pin, i) => {
 				const img = new Image();
-				img.src = pin.images['474x'].url;
+				img.src = pin.images['236x'].url;
 				img.id = i.toString();
-				img.width = pin.images['474x'].width;
-				img.height = pin.images['474x'].height;
+				img.width = pin.images['236x'].width;
+				img.height = pin.images['236x'].height;
 				images.push(img);
 			});
 		}
