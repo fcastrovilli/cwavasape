@@ -10,6 +10,7 @@
 	$: src_url = '/images?url=' + images[$scrollPosition].src;
 	$: big_url = images[$scrollPosition].src.replace('236x', 'originals');
 	$: url = '';
+	let opacity = 75;
 
 	onMount(() => {
 		ctx = canvas.getContext('2d');
@@ -43,16 +44,28 @@
 	}
 </script>
 
-<button
-	on:click={() => (analysis = !analysis)}
-	class:text-black={analysis}
-	class:bg-white={analysis}
-	class:bg-black={!analysis}
-	class:text-white={!analysis}
-	class="z-50 absolute top-5 right-5 p-2 rounded-lg border border-white align-middle"
->
-	analyze
-</button>
+<div class="z-50 absolute top-5 right-5">
+	<button
+		on:click={() => (analysis = !analysis)}
+		class:text-black={analysis}
+		class:bg-white={analysis}
+		class:bg-black={!analysis}
+		class:text-white={!analysis}
+		class="p-2 rounded-lg border border-white align-middle w-full"
+	>
+		analyze
+	</button>
+	{#if analysis}
+		<input
+			bind:value={opacity}
+			type="range"
+			min="0"
+			max="100"
+			step="1"
+			class="range accent-black w-full"
+		/>
+	{/if}
+</div>
 {#if images[$scrollPosition].src}
 	<a href={big_url} rel="nofollow" target="_blank">
 		<div class="h-screen w-screen flex justify-center items-center">
@@ -60,7 +73,8 @@
 			{#if analysis && url}
 				<img
 					src={url}
-					class="opacity-70 absolute max-h-screen object-contain h-full w-full"
+					style="opacity: {opacity}%;"
+					class="absolute max-h-screen object-contain h-full w-full"
 					alt=""
 				/>
 			{/if}
