@@ -31,7 +31,7 @@ The application is designed to be deployed to [Vercel](https://vercel.com) and t
 This is an example of query that Pinterest itself uses to get paginated data from a board:
 
 ```sh
-https://www.pinterest.com/resource/BoardFeedResource/get/?source_url=%2F---USERNAME---%2F---BOARDNAME---%2F&data={"options":{"board_id":"---NUMERIC_ID---","page_size":10}}
+https://www.pinterest.com/resource/BoardFeedResource/get/?source_url=/---USERNAME---/---BOARDNAME---/&data={"options":{"board_id":"BOARD_ID","page_size":10}}
 ```
 
 The `---USERNAME---` and `---BOARDNAME---` are the username and the board name of the user you want to scrape.
