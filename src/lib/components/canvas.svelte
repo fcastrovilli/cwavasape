@@ -22,16 +22,16 @@
 		if (ctx) {
 			img = images[$scrollPosition];
 			if (analysis) {
-				url = '';
-				setTimeout(() => {
-					if ($scrollPosition === images.indexOf(img)) {
-						analyze(src_url).then((result) => {
-							if (result) {
-								url = result.url;
-							}
-						});
-					}
-				}, 400);
+				// url = '';
+				if ($scrollPosition === images.indexOf(img)) {
+					analyze(src_url).then((result) => {
+						if (result) {
+							url = result.url;
+						}
+					});
+				}
+				// setTimeout(() => {
+				// }, 400);
 			}
 			draw();
 		}
