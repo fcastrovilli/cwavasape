@@ -12,7 +12,7 @@ export async function analyze(url: string) {
 		distinctColor: true,
 		positive: false,
 		negative: true,
-		alpha: 900,
+		alpha: 800,
 		labelProperty: 'surface',
 		labelColor: 'black',
 		unit: 'px'
