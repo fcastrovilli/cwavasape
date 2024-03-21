@@ -8,6 +8,7 @@
 	let img: HTMLImageElement = images[$scrollPosition];
 	let analysis: boolean = false;
 	$: src_url = '/images?url=' + images[$scrollPosition].src;
+	$: big_url = images[$scrollPosition].src.replace('236x', 'originals');
 	$: url = '';
 
 	onMount(() => {
@@ -53,7 +54,7 @@
 	analyze
 </button>
 {#if images[$scrollPosition].src}
-	<a href={images[$scrollPosition].src} rel="nofollow" target="_blank">
+	<a href={big_url} rel="nofollow" target="_blank">
 		<div class="h-screen w-screen flex justify-center items-center">
 			<canvas bind:this={canvas} class="max-h-screen object-contain h-full w-full" />
 			{#if analysis && url}
