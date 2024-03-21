@@ -1,38 +1,21 @@
-# create-svelte
+# Pinterest Visualizer
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+This is a Sveltekit web application designed to scrape data from Pinterest boards and visualize the results in a meaningful way.
 
-## Creating a project
+The application uses the `image-js` and `resemblejs` libraries for image processing and comparison.
 
-If you're seeing this, you've probably already done this step. Congrats!
+To run the application locally, use the `dev` script defined in the [`package.json`](command:_github.copilot.openRelativePath?%5B%22package.json%22%5D 'package.json') file:
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
+```sh
+pnpm run dev
 ```
 
-## Developing
+To build the application for production, use the `build` script:
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+```sh
+pnpm run build
 ```
 
-## Building
+Please note that you need to set up the necessary environment variables in a [`.env`](command:_github.copilot.openRelativePath?%5B%22.env%22%5D '.env') file based on the provided [`.env.example`](command:_github.copilot.openRelativePath?%5B%22.env.example%22%5D '.env.example') file.
 
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+This application is still in development (version 0.0.1) and contributions are welcome.
