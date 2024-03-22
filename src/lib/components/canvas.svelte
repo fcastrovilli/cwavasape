@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { scrollPosition } from '$lib/stores';
+	import { scrollPosition, settings } from '$lib/stores';
 	import { onMount } from 'svelte';
 	import { analyze } from '$lib/utils';
 	export let images: HTMLImageElement[] = [];
+
 	let canvas: HTMLCanvasElement;
 	let ctx: CanvasRenderingContext2D | null = null;
 	let img: HTMLImageElement = images[$scrollPosition];
@@ -10,7 +11,13 @@
 	$: src_url = '/images?url=' + images[$scrollPosition].src;
 	$: big_url = images[$scrollPosition].src.replace('236x', 'originals');
 	$: url = '';
-	let opacity = 75;
+
+	$: if (!analysis) url = '';
+	import * as ContextMenu from '$lib/components/ui/context-menu';
+	import { Slider } from '$lib/components/ui/slider';
+	import ContextMenuLabel from './ui/context-menu/context-menu-label.svelte';
+
+	// let value = $settings.quality;
 
 	onMount(() => {
 		ctx = canvas.getContext('2d');
@@ -23,16 +30,7 @@
 		if (ctx) {
 			img = images[$scrollPosition];
 			if (analysis) {
-				// url = '';
-				if ($scrollPosition === images.indexOf(img)) {
-					analyze(src_url).then((result) => {
-						if (result) {
-							url = result.url;
-						}
-					});
-				}
-				// setTimeout(() => {
-				// }, 400);
+				analyzeImage();
 			}
 			draw();
 		}
@@ -42,42 +40,92 @@
 		canvas.height = img.height;
 		ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
 	}
+
+	function analyzeImage() {
+		if ($scrollPosition === images.indexOf(img)) {
+			analyze(src_url).then((result) => {
+				if (result) {
+					url = result.url;
+				}
+			});
+		}
+	}
 </script>
 
-<div class="z-50 absolute top-5 right-5">
-	<button
-		on:click={() => (analysis = !analysis)}
-		class:text-black={analysis}
-		class:bg-white={analysis}
-		class:bg-black={!analysis}
-		class:text-white={!analysis}
-		class="p-2 rounded-lg border border-white align-middle w-full"
-	>
-		analyze
-	</button>
-	{#if analysis}
-		<input
-			bind:value={opacity}
-			type="range"
-			min="0"
-			max="100"
-			step="1"
-			class="range accent-black w-full"
-		/>
-	{/if}
-</div>
-{#if images[$scrollPosition].src}
-	<a href={big_url} rel="nofollow" target="_blank">
-		<div class="h-screen w-screen flex justify-center items-center">
-			<canvas bind:this={canvas} class="max-h-screen object-contain h-full w-full" />
-			{#if analysis && url}
-				<img
-					src={url}
-					style="opacity: {opacity}%;"
-					class="absolute max-h-screen object-contain h-full w-full"
-					alt=""
-				/>
-			{/if}
-		</div>
-	</a>
-{/if}
+<ContextMenu.Root>
+	<ContextMenu.Trigger>
+		{#if images[$scrollPosition].src}
+			<a href={big_url} rel="nofollow" target="_blank">
+				<div class="flex h-screen w-screen items-center justify-center">
+					<canvas bind:this={canvas} class="h-full max-h-screen w-full object-contain" />
+					{#if analysis && url}
+						<img
+							src={url}
+							style="opacity: {$settings.opacity}%;"
+							class="absolute h-full max-h-screen w-full object-contain"
+							alt=""
+						/>
+					{/if}
+				</div>
+			</a>
+		{/if}
+	</ContextMenu.Trigger>
+	<ContextMenu.Content class="min-w-48">
+		<ContextMenu.CheckboxItem bind:checked={analysis}>Analysis</ContextMenu.CheckboxItem>
+		<ContextMenu.Separator />
+		<ContextMenu.Label>Settings</ContextMenu.Label>
+		<ContextMenu.Item>
+			<ContextMenuLabel>Opacity</ContextMenuLabel>
+			<Slider
+				value={[$settings.opacity]}
+				onValueChange={(e) => ($settings.opacity = e[0])}
+				min={0}
+				max={100}
+				step={1}
+			/>
+		</ContextMenu.Item>
+		<ContextMenu.Item>
+			<ContextMenuLabel>Mask Threshold</ContextMenuLabel>
+			<Slider
+				value={[$settings.mask_threshold]}
+				onValueChange={(e) => (($settings.mask_threshold = e[0]), analyzeImage())}
+				min={0.0}
+				max={0.99}
+				step={0.01}
+			/>
+		</ContextMenu.Item>
+		<ContextMenu.Item>
+			<ContextMenuLabel>Gaussian Radius</ContextMenuLabel>
+			<Slider
+				value={[$settings.gaussian_radius]}
+				onValueChange={(e) => (($settings.gaussian_radius = e[0]), analyzeImage())}
+				min={0}
+				max={20}
+				step={1}
+			/>
+		</ContextMenu.Item>
+		<ContextMenu.Item>
+			<ContextMenuLabel>Paint Alpha</ContextMenuLabel>
+			<Slider
+				value={[$settings.paint_alpha]}
+				onValueChange={(e) => (($settings.paint_alpha = e[0]), analyzeImage())}
+				min={0}
+				max={2000}
+				step={1}
+			/>
+		</ContextMenu.Item>
+		<!-- <ContextMenu.Separator />
+		<ContextMenu.RadioGroup
+			bind:value
+			onValueChange={() => {
+				$settings.quality = value;
+			}}
+		>
+			<ContextMenu.Label inset>Image Quality</ContextMenu.Label>
+			<ContextMenu.Separator />
+			<ContextMenu.RadioItem value="236x">Default</ContextMenu.RadioItem>
+			<ContextMenu.RadioItem value="736x">Very Good</ContextMenu.RadioItem>
+			<ContextMenu.RadioItem value="orig">Original</ContextMenu.RadioItem>
+		</ContextMenu.RadioGroup> -->
+	</ContextMenu.Content>
+</ContextMenu.Root>

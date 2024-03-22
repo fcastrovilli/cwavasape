@@ -3,7 +3,7 @@
 	import { browser } from '$app/environment';
 	import { enhance } from '$app/forms';
 	import type { PinResponse } from '$lib/types';
-	import { scrollPosition } from '$lib/stores';
+	import { scrollPosition, settings } from '$lib/stores';
 	export let data;
 	let pins: PinResponse[] | undefined = data.pins;
 	let new_pins: PinResponse[] | undefined = pins;
@@ -13,7 +13,7 @@
 		if (new_pins && new_pins.length > 0 && browser) {
 			new_pins.forEach((pin, i) => {
 				const img = new Image();
-				img.src = pin.images['236x'].url;
+				img.src = pin.images[$settings.quality as keyof typeof pin.images].url;
 				img.id = i.toString();
 				img.width = pin.images['236x'].width;
 				img.height = pin.images['236x'].height;
@@ -48,7 +48,7 @@
 {#if pins}
 	{#if pins.length > 0}
 		<div
-			class="w-screen h-screen overflow-hidden"
+			class="h-screen w-screen overflow-hidden"
 			on:wheel={(e) => {
 				if (!pins) return;
 				if (e.deltaY <= 0 && y == 0) return;
@@ -103,7 +103,7 @@
 			{/if}
 		</div>
 	{:else}
-		<div class="flex justify-center items-center h-screen">
+		<div class="flex h-screen items-center justify-center">
 			<p class="text-white">no data found</p>
 		</div>
 	{/if}

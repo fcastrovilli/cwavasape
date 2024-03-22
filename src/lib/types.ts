@@ -207,3 +207,15 @@ export type Analysis = {
 	};
 	analysisTime: number;
 };
+
+export type ui_settings = {
+	quality: string;
+	gaussian_radius: number;
+	mask_threshold: number;
+	paint_alpha: number;
+	distinct_color: boolean;
+	positive: boolean;
+	negative: boolean;
+	opacity: number;
+	random: boolean;
+};
