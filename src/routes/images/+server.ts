@@ -1,8 +1,8 @@
 import { error } from '@sveltejs/kit';
 
-export const config: import('@sveltejs/adapter-vercel').Config = {
-	runtime: 'edge'
-};
+// export const config: import('@sveltejs/adapter-vercel').Config = {
+// 	runtime: 'edge'
+// };
 
 export async function GET({ setHeaders, url, fetch }) {
 	try {
