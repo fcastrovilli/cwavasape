@@ -38,7 +38,11 @@
 			step={1}
 		/>
 	</Option>
-	<Option label="Mask Threshold" settings_value={$settings.mask_threshold} unity="%">
+	<Option
+		label="Mask Threshold"
+		settings_value={Math.round($settings.mask_threshold * 100)}
+		unity="%"
+	>
 		<Slider
 			value={[$settings.mask_threshold]}
 			onValueChange={(e) => (($settings.mask_threshold = e[0]), analyze())}
@@ -47,7 +51,7 @@
 			step={0.01}
 		/>
 	</Option>
-	<Option label="Gaussian Radius" settings_value={$settings.gaussian_radius} unity="%">
+	<Option label="Gaussian Radius" settings_value={$settings.gaussian_radius} unity="px">
 		<Slider
 			value={[$settings.gaussian_radius]}
 			onValueChange={(e) => (($settings.gaussian_radius = e[0]), analyze())}
@@ -56,7 +60,7 @@
 			step={1}
 		/>
 	</Option>
-	<Option label="Paint Alpha" settings_value={$settings.paint_alpha} unity="%">
+	<Option label="Paint Alpha" settings_value={$settings.paint_alpha} unity="">
 		<Slider
 			value={[$settings.paint_alpha]}
 			onValueChange={(e) => (($settings.paint_alpha = e[0]), analyze())}
