@@ -72,6 +72,11 @@
 		{/if}
 	</ContextMenu.Trigger>
 	<ContextMenu.Content class="min-w-48">
+		<ContextMenu.Item>
+			<a href={big_url} rel="nofollow" target="_blank"> Show Original </a>
+		</ContextMenu.Item>
+		<ContextMenu.Item disabled>Download</ContextMenu.Item>
+		<ContextMenu.Separator />
 		<ContextMenu.CheckboxItem bind:checked={analysis}>Analyze</ContextMenu.CheckboxItem>
 		<ContextMenu.CheckboxItem bind:checked={$show_settings}>Settings</ContextMenu.CheckboxItem>
 		<!-- <ContextMenu.Separator />
@@ -87,10 +92,5 @@
 			<ContextMenu.RadioItem value="736x">Very Good</ContextMenu.RadioItem>
 			<ContextMenu.RadioItem value="orig">Original</ContextMenu.RadioItem>
 		</ContextMenu.RadioGroup> -->
-		<ContextMenu.Separator />
-		<ContextMenu.Item>
-			<a href={big_url} rel="nofollow" target="_blank"> Show Original </a>
-		</ContextMenu.Item>
-		<ContextMenu.Item disabled>Download</ContextMenu.Item>
 	</ContextMenu.Content>
 </ContextMenu.Root>

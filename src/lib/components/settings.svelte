@@ -19,16 +19,18 @@
 
 <div
 	use:draggable
-	class="absolute left-1/3 top-1/3 z-50 w-full max-w-xs space-y-2 rounded-3xl bg-black p-4 outline outline-1 outline-white"
+	class="absolute left-1/3 top-1/3 z-50 w-full max-w-xs space-y-2 rounded-3xl bg-black p-4 pb-6 outline outline-1 outline-white"
 >
-	<div class="flex justify-between">
+	<div class="flex cursor-move justify-between">
 		<h3 class="pb-2 text-xl font-semibold">Settings</h3>
 		<button on:click={() => ($show_settings = false)}>X</button>
 	</div>
-	<div class="flex items-center justify-center space-x-2">
+	<hr />
+	<div class="flex items-center justify-center space-x-2 py-2">
 		<Switch id="analyze" bind:checked={analysis} />
-		<Label for="analyze">Analyze</Label>
+		<Label for="analyze" class="font-semibold">Analyze</Label>
 	</div>
+	<hr />
 	<Option label="Opacity" settings_value={$settings.opacity} unity="%">
 		<Slider
 			value={[$settings.opacity]}
