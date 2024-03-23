@@ -3,7 +3,8 @@
 	import { browser } from '$app/environment';
 	import { enhance } from '$app/forms';
 	import type { PinResponse } from '$lib/types';
-	import { scrollPosition, settings } from '$lib/stores';
+	import { scrollPosition, settings, started } from '$lib/stores';
+	import Start from '$lib/components/start.svelte';
 	export let data;
 	let pins: PinResponse[] | undefined = data.pins;
 	let new_pins: PinResponse[] | undefined = pins;
@@ -28,11 +29,12 @@
 	$: $scrollPosition = y;
 
 	function refetch() {
+		if (!$started) return;
 		btn.click();
 	}
 
 	function onKeyDown(e: KeyboardEvent) {
-		if (!pins) return;
+		if (!pins || !$started) return;
 		if (e.key == 'ArrowUp' && y == 0) return;
 		if (e.key == 'ArrowDown' && y == pins.length - 1) return;
 		if (e.key == 'ArrowDown' && y == pins.length - gap) {
@@ -45,7 +47,9 @@
 </script>
 
 <svelte:window on:keydown={onKeyDown} />
-{#if pins}
+{#if !$started}
+	<Start />
+{:else if pins}
 	{#if pins.length > 0}
 		<div
 			class="h-screen w-screen overflow-hidden"
