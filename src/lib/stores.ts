@@ -1,9 +1,10 @@
 import { writable } from 'svelte/store';
-import type { PinResponse, ui_settings } from './types';
+import type { PinResponse, ui_settings } from '$lib/types';
 
 export const scrollPosition = writable(0);
 export const all_pins = writable([] as PinResponse[]);
 export const bookmark = writable('');
+export const started = writable(false);
 export const settings = writable({
 	quality: '236x',
 	gaussian_radius: 1,
@@ -15,3 +16,7 @@ export const settings = writable({
 	opacity: 75,
 	random: false
 } as ui_settings);
+
+export const updateLocalStorage = (key: string, value: ui_settings) => {
+	localStorage.setItem(key, JSON.stringify(value));
+};

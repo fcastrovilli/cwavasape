@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { scrollPosition, settings } from '$lib/stores';
+	import { scrollPosition, settings, updateLocalStorage } from '$lib/stores';
 	import { onMount } from 'svelte';
 	import { analyze } from '$lib/utils';
 	export let images: HTMLImageElement[] = [];
@@ -16,8 +16,6 @@
 	import * as ContextMenu from '$lib/components/ui/context-menu';
 	import { Slider } from '$lib/components/ui/slider';
 	import ContextMenuLabel from './ui/context-menu/context-menu-label.svelte';
-
-	// let value = $settings.quality;
 
 	onMount(() => {
 		ctx = canvas.getContext('2d');
@@ -52,26 +50,25 @@
 	}
 </script>
 
-<ContextMenu.Root>
+<ContextMenu.Root closeFocus={() => updateLocalStorage('settings', $settings)}>
 	<ContextMenu.Trigger>
 		{#if images[$scrollPosition].src}
-			<a href={big_url} rel="nofollow" target="_blank">
-				<div class="flex h-screen w-screen items-center justify-center">
-					<canvas bind:this={canvas} class="h-full max-h-screen w-full object-contain" />
-					{#if analysis && url}
-						<img
-							src={url}
-							style="opacity: {$settings.opacity}%;"
-							class="absolute h-full max-h-screen w-full object-contain"
-							alt=""
-						/>
-					{/if}
-				</div>
-			</a>
+			<div class="flex h-screen w-screen items-center justify-center">
+				<canvas bind:this={canvas} class="h-full max-h-screen w-full object-contain" />
+				{#if analysis && url}
+					<img
+						src={url}
+						style="opacity: {$settings.opacity}%;"
+						class="absolute h-full max-h-screen w-full object-contain"
+						alt=""
+					/>
+				{/if}
+			</div>
 		{/if}
 	</ContextMenu.Trigger>
 	<ContextMenu.Content class="min-w-48">
-		<ContextMenu.CheckboxItem bind:checked={analysis}>Analysis</ContextMenu.CheckboxItem>
+		<ContextMenu.CheckboxItem dir={'rtl'} bind:checked={analysis}>Analyze</ContextMenu.CheckboxItem>
+
 		<ContextMenu.Separator />
 		<ContextMenu.Label>Settings</ContextMenu.Label>
 		<ContextMenu.Item>
@@ -127,5 +124,10 @@
 			<ContextMenu.RadioItem value="736x">Very Good</ContextMenu.RadioItem>
 			<ContextMenu.RadioItem value="orig">Original</ContextMenu.RadioItem>
 		</ContextMenu.RadioGroup> -->
+		<ContextMenu.Separator />
+		<ContextMenu.Item>
+			<a href={big_url} rel="nofollow" target="_blank"> Show Original </a>
+		</ContextMenu.Item>
+		<ContextMenu.Item disabled>Download</ContextMenu.Item>
 	</ContextMenu.Content>
 </ContextMenu.Root>

@@ -1,5 +1,5 @@
 import { Image as imagejs } from 'image-js';
-import { settings } from './stores';
+import { settings } from '$lib/stores';
 
 let alias_settings: ui_settings = {
 	quality: '236x',
