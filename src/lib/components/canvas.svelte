@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { scrollPosition, settings, updateLocalStorage } from '$lib/stores';
+	import { scrollPosition, settings, updateLocalStorage, show_settings } from '$lib/stores';
 	import { onMount } from 'svelte';
 	import { analyze } from '$lib/utils';
 	export let images: HTMLImageElement[] = [];
@@ -16,6 +16,7 @@
 	import * as ContextMenu from '$lib/components/ui/context-menu';
 	import { Slider } from '$lib/components/ui/slider';
 	import ContextMenuLabel from './ui/context-menu/context-menu-label.svelte';
+	import Settings from './settings.svelte';
 
 	onMount(() => {
 		ctx = canvas.getContext('2d');
@@ -50,6 +51,10 @@
 	}
 </script>
 
+{#if $show_settings}
+	<Settings bind:analysis on:analyze={() => analyzeImage()} />
+{/if}
+
 <ContextMenu.Root closeFocus={() => updateLocalStorage('settings', $settings)}>
 	<ContextMenu.Trigger>
 		{#if images[$scrollPosition].src}
@@ -67,50 +72,8 @@
 		{/if}
 	</ContextMenu.Trigger>
 	<ContextMenu.Content class="min-w-48">
-		<ContextMenu.CheckboxItem dir={'rtl'} bind:checked={analysis}>Analyze</ContextMenu.CheckboxItem>
-
-		<ContextMenu.Separator />
-		<ContextMenu.Label>Settings</ContextMenu.Label>
-		<ContextMenu.Item>
-			<ContextMenuLabel>Opacity</ContextMenuLabel>
-			<Slider
-				value={[$settings.opacity]}
-				onValueChange={(e) => ($settings.opacity = e[0])}
-				min={0}
-				max={100}
-				step={1}
-			/>
-		</ContextMenu.Item>
-		<ContextMenu.Item>
-			<ContextMenuLabel>Mask Threshold</ContextMenuLabel>
-			<Slider
-				value={[$settings.mask_threshold]}
-				onValueChange={(e) => (($settings.mask_threshold = e[0]), analyzeImage())}
-				min={0.0}
-				max={0.99}
-				step={0.01}
-			/>
-		</ContextMenu.Item>
-		<ContextMenu.Item>
-			<ContextMenuLabel>Gaussian Radius</ContextMenuLabel>
-			<Slider
-				value={[$settings.gaussian_radius]}
-				onValueChange={(e) => (($settings.gaussian_radius = e[0]), analyzeImage())}
-				min={0}
-				max={20}
-				step={1}
-			/>
-		</ContextMenu.Item>
-		<ContextMenu.Item>
-			<ContextMenuLabel>Paint Alpha</ContextMenuLabel>
-			<Slider
-				value={[$settings.paint_alpha]}
-				onValueChange={(e) => (($settings.paint_alpha = e[0]), analyzeImage())}
-				min={0}
-				max={2000}
-				step={1}
-			/>
-		</ContextMenu.Item>
+		<ContextMenu.CheckboxItem bind:checked={analysis}>Analyze</ContextMenu.CheckboxItem>
+		<ContextMenu.CheckboxItem bind:checked={$show_settings}>Settings</ContextMenu.CheckboxItem>
 		<!-- <ContextMenu.Separator />
 		<ContextMenu.RadioGroup
 			bind:value

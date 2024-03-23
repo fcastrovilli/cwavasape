@@ -5,6 +5,7 @@ export const scrollPosition = writable(0);
 export const all_pins = writable([] as PinResponse[]);
 export const bookmark = writable('');
 export const started = writable(false);
+export const show_settings = writable(false);
 export const settings = writable({
 	quality: '236x',
 	gaussian_radius: 1,
