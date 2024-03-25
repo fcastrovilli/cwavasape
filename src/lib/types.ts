@@ -218,4 +218,7 @@ export type ui_settings = {
 	negative: boolean;
 	opacity: number;
 	random: boolean;
+	audio_volume: number;
 };
+
+export type RawAudioFiles = { [key: string]: string };

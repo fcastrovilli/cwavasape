@@ -29,6 +29,9 @@ dependencies:
   tailwind-variants:
     specifier: ^0.2.1
     version: 0.2.1(tailwindcss@3.4.1)
+  tone:
+    specifier: ^14.7.77
+    version: 14.7.77
 
 devDependencies:
   '@sveltejs/adapter-auto':
@@ -1217,6 +1220,14 @@ packages:
   /async-sema@3.1.1:
     resolution: {integrity: sha512-tLRNUXati5MFePdAk8dw7Qt7DpxPB60ofAgn8WRhW6a2rcimZnYBP9oxHiv0OHy+Wz7kPMG+t4LGdt31+4EmGg==}
     dev: true
+
+  /automation-events@7.0.2:
+    resolution: {integrity: sha512-TfzwQUXRKoXCP08W0FGDID18y7gJvvy1KKdH3jPPUbTV8mVHec5KXG85Q9sly0COMu5cY6qYmNzq6blJa2lo2w==}
+    engines: {node: '>=18.2.0'}
+    dependencies:
+      '@babel/runtime': 7.24.1
+      tslib: 2.6.2
+    dev: false
 
   /autoprefixer@10.4.19(postcss@8.4.38):
     resolution: {integrity: sha512-BaENR2+zBZ8xXhM4pUaKUxlVdxZ0EZhjvbopwnXmxRUfqDmwSpC2lAi/QXvx7NRdPCo1WKEcEF6mV64si1z4Ew==}
@@ -3107,6 +3118,14 @@ packages:
     resolution: {integrity: sha512-itJW8lvSA0TXEphiRoawsCksnlf8SyvmFzIhltqAHluXd88pkCd+cXJVHTDwdCr0IzwptSm035IHQktUu1QUMg==}
     engines: {node: '>=0.10.0'}
 
+  /standardized-audio-context@25.3.67:
+    resolution: {integrity: sha512-/4Um872ILMJeMpykffUj1gHHhG3ooEiuAzjoyvJGqtTXwq1xMA9n5kxo9fp+y5lBW50atu/NKcWDgU8dO6jOhw==}
+    dependencies:
+      '@babel/runtime': 7.24.1
+      automation-events: 7.0.2
+      tslib: 2.6.2
+    dev: false
+
   /string-width@4.2.3:
     resolution: {integrity: sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==}
     engines: {node: '>=8'}
@@ -3408,6 +3427,13 @@ packages:
     engines: {node: '>=8.0'}
     dependencies:
       is-number: 7.0.0
+
+  /tone@14.7.77:
+    resolution: {integrity: sha512-tCfK73IkLHyzoKUvGq47gyDyxiKLFvKiVCOobynGgBB9Dl0NkxTM2p+eRJXyCYrjJwy9Y0XCMqD3uOYsYt2Fdg==}
+    dependencies:
+      standardized-audio-context: 25.3.67
+      tslib: 2.6.2
+    dev: false
 
   /totalist@3.0.1:
     resolution: {integrity: sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==}

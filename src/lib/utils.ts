@@ -10,7 +10,8 @@ let alias_settings: ui_settings = {
 	positive: true,
 	negative: false,
 	opacity: 75,
-	random: false
+	random: false,
+	audio_volume: -6
 };
 export async function analyze(url: string) {
 	if (!url) return;
@@ -92,4 +93,14 @@ export const flyAndScale = (
 		},
 		easing: cubicOut
 	};
+};
+
+export const random = (min: number, max: number) => {
+	const rnd = Math.floor(Math.random() * (max - min + 1)) + min;
+	return rnd;
+};
+
+export const random_float = (min: number, max: number) => {
+	const rnd = Math.random() * (max - min) + min;
+	return rnd;
 };

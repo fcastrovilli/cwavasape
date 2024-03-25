@@ -44,6 +44,7 @@
 		"resemblejs": "^5.0.0",
 		"svelte-radix": "^1.1.0",
 		"tailwind-merge": "^2.2.2",
-		"tailwind-variants": "^0.2.1"
+		"tailwind-variants": "^0.2.1",
+		"tone": "^14.7.77"
 	}
 }

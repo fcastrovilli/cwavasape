@@ -1,5 +1,11 @@
 <script lang="ts">
-	import { scrollPosition, settings, updateLocalStorage, show_settings } from '$lib/stores';
+	import {
+		scrollPosition,
+		settings,
+		updateLocalStorage,
+		show_settings,
+		audio_active
+	} from '$lib/stores';
 	import { onMount } from 'svelte';
 	import { analyze } from '$lib/utils';
 	export let images: HTMLImageElement[] = [];
@@ -14,8 +20,6 @@
 
 	$: if (!analysis) url = '';
 	import * as ContextMenu from '$lib/components/ui/context-menu';
-	import { Slider } from '$lib/components/ui/slider';
-	import ContextMenuLabel from './ui/context-menu/context-menu-label.svelte';
 	import Settings from './settings.svelte';
 
 	onMount(() => {
@@ -78,6 +82,7 @@
 		<ContextMenu.Item disabled>Download</ContextMenu.Item>
 		<ContextMenu.Separator />
 		<ContextMenu.CheckboxItem bind:checked={analysis}>Analyze</ContextMenu.CheckboxItem>
+		<ContextMenu.CheckboxItem bind:checked={$audio_active}>Audio</ContextMenu.CheckboxItem>
 		<ContextMenu.CheckboxItem bind:checked={$show_settings}>Settings</ContextMenu.CheckboxItem>
 		<!-- <ContextMenu.Separator />
 		<ContextMenu.RadioGroup
@@ -92,5 +97,6 @@
 			<ContextMenu.RadioItem value="736x">Very Good</ContextMenu.RadioItem>
 			<ContextMenu.RadioItem value="orig">Original</ContextMenu.RadioItem>
 		</ContextMenu.RadioGroup> -->
+		<ContextMenu.Separator />
 	</ContextMenu.Content>
 </ContextMenu.Root>
