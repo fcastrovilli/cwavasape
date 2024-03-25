@@ -11,13 +11,17 @@
 
 	onMount(async () => {
 		if (browser && urls && !sampler) {
-			sampler = new Tone.Sampler({
-				urls: urls,
-				baseUrl: '/audio/'
-			});
-			sampler.release = 1;
+			init_sampler();
 		}
 	});
+
+	function init_sampler() {
+		sampler = new Tone.Sampler({
+			urls: urls,
+			baseUrl: '/audio/'
+		});
+		sampler.release = 1;
+	}
 
 	$: {
 		if (sampler?.loaded) {
@@ -27,7 +31,7 @@
 
 	$: {
 		if (browser && sampler?.loaded && $scrollPosition >= 0) {
-			const random_note = random(1, 1000);
+			const random_note = random(1, 25000);
 			const random_length = random_float(0.1, 2.0);
 			play(random_note, random_length);
 		}
