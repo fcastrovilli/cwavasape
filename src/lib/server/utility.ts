@@ -1,9 +1,9 @@
 import { SOURCE_URL, BOARD_ID, PAGE_SIZE, BASE_URL } from '$env/static/private';
 import type { PinResponse } from '$lib/types';
-let pins: PinResponse[] = [];
-let bookmark: string = '';
 
 export const get_pins = async (last_bookmark: string, init: boolean = false) => {
+	let pins: PinResponse[] = [];
+	let bookmark: string = '';
 	const searchParams = new URLSearchParams();
 	searchParams.append('source_url', SOURCE_URL);
 	searchParams.append(
@@ -36,3 +36,20 @@ export const get_pins = async (last_bookmark: string, init: boolean = false) => 
 		bookmark
 	};
 };
+
+export function createSamplerUrls(rawAudioFiles: string[]): { [note: number]: string } {
+	const urls: { [note: number]: string } = {};
+	const noteRange = 128;
+
+	const randomNotes: number[] = [];
+	for (let i = 0; i < noteRange; i++) {
+		randomNotes.push(i);
+	}
+	randomNotes.sort(() => Math.random() - 0.5);
+
+	for (let i = 0; i < Object.keys(rawAudioFiles).length; i++) {
+		urls[randomNotes[i]] = rawAudioFiles[i];
+	}
+
+	return urls;
+}

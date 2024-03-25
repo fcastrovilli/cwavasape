@@ -2,10 +2,11 @@
 	import Canvas from '$lib/components/canvas.svelte';
 	import { browser } from '$app/environment';
 	import { enhance } from '$app/forms';
-	import type { PinResponse } from '$lib/types';
+	import type { PinResponse, RawAudioFiles } from '$lib/types';
 	import { scrollPosition, settings, started } from '$lib/stores';
-	import Start from '$lib/components/start.svelte';
+	import Audio from '$lib/components/audio.svelte';
 	export let data;
+	let urls: RawAudioFiles | undefined = data.urls;
 	let pins: PinResponse[] | undefined = data.pins;
 	let new_pins: PinResponse[] | undefined = pins;
 	let images: HTMLImageElement[] = [];
@@ -47,68 +48,65 @@
 </script>
 
 <svelte:window on:keydown={onKeyDown} />
-{#if !$started}
-	<Start />
-{:else if pins}
-	{#if pins.length > 0}
-		<div
-			class="h-screen w-screen overflow-hidden"
-			on:wheel={(e) => {
-				if (!pins) return;
-				if (e.deltaY <= 0 && y == 0) return;
-				if (e.deltaY >= 0 && y >= pins.length - 1) return;
-				if (e.deltaY >= 0 && y == pins.length - gap) {
-					y = pins.length - gap + 1;
-					// console.log('pinslength:', pins.length, 'y:', y, 'refetching');
-					refetch();
-				} else if (e.deltaY >= 0 && y !== pins.length - gap) y += 1;
-				if (e.deltaY <= 0 && y > 0) y -= 1;
+{#if pins && pins.length > 0}
+	<div
+		class="h-screen w-screen overflow-hidden"
+		on:wheel={(e) => {
+			if (!pins) return;
+			if (e.deltaY <= 0 && y == 0) return;
+			if (e.deltaY >= 0 && y >= pins.length - 1) return;
+			if (e.deltaY >= 0 && y == pins.length - gap) {
+				y = pins.length - gap + 1;
+				// console.log('pinslength:', pins.length, 'y:', y, 'refetching');
+				refetch();
+			} else if (e.deltaY >= 0 && y !== pins.length - gap) y += 1;
+			if (e.deltaY <= 0 && y > 0) y -= 1;
+		}}
+		on:touchstart={(e) => {
+			touchStart = e.changedTouches[0].clientY;
+		}}
+		on:touchmove={(e) => {
+			if (!pins) return;
+			const touch = e.changedTouches[0];
+			const direction = touchStart < touch.clientY ? 'up' : 'down';
+			if (direction == 'up' && y == 0) return;
+			if (direction == 'down' && y >= pins.length - 1) return;
+			if (direction == 'down' && y == pins.length - gap) {
+				y = pins.length - gap + 1;
+				// console.log('pinslength:', pins.length, 'y:', y, 'refetching');
+				refetch();
+			} else if (direction == 'down' && y !== pins.length - gap) y += 1;
+			if (direction == 'up' && y > 0) y -= 1;
+		}}
+	>
+		<form
+			method="post"
+			use:enhance={() => {
+				return async ({ result }) => {
+					if (!pins) return;
+					// @ts-ignore
+					if (!result.data) return;
+					// @ts-ignore
+					new_pins = result.data.new_pins;
+					// @ts-ignore
+					pins = [...pins, ...result.data.new_pins];
+					// @ts-ignore
+					bookmark = result.data.new_bookmark;
+					// console.log('refetched');
+				};
 			}}
-			on:touchstart={(e) => {
-				touchStart = e.changedTouches[0].clientY;
-			}}
-			on:touchmove={(e) => {
-				if (!pins) return;
-				const touch = e.changedTouches[0];
-				const direction = touchStart < touch.clientY ? 'up' : 'down';
-				if (direction == 'up' && y == 0) return;
-				if (direction == 'down' && y >= pins.length - 1) return;
-				if (direction == 'down' && y == pins.length - gap) {
-					y = pins.length - gap + 1;
-					// console.log('pinslength:', pins.length, 'y:', y, 'refetching');
-					refetch();
-				} else if (direction == 'down' && y !== pins.length - gap) y += 1;
-				if (direction == 'up' && y > 0) y -= 1;
-			}}
+			action="?/refetch"
 		>
-			<form
-				method="post"
-				use:enhance={() => {
-					return async ({ result }) => {
-						if (!pins) return;
-						// @ts-ignore
-						if (!result.data) return;
-						// @ts-ignore
-						new_pins = result.data.new_pins;
-						// @ts-ignore
-						pins = [...pins, ...result.data.new_pins];
-						// @ts-ignore
-						bookmark = result.data.new_bookmark;
-						// console.log('refetched');
-					};
-				}}
-				action="?/refetch"
-			>
-				<input type="text" class="hidden" name="bookmark" value={bookmark} />
-				<button bind:this={btn} type="submit" class="hidden" />
-			</form>
-			{#if pins[y] && images.length > 0}
-				<Canvas {images} />
-			{/if}
-		</div>
-	{:else}
-		<div class="flex h-screen items-center justify-center">
-			<p class="text-white">no data found</p>
-		</div>
-	{/if}
+			<input type="text" class="hidden" name="bookmark" value={bookmark} />
+			<button bind:this={btn} type="submit" class="hidden" />
+		</form>
+		{#if pins[y] && images.length > 0}
+			<Canvas {images} />
+		{/if}
+	</div>
+	<Audio {urls} />
+{:else}
+	<div class="flex h-screen items-center justify-center">
+		<p class="text-white">no data found</p>
+	</div>
 {/if}

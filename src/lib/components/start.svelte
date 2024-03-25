@@ -1,5 +1,11 @@
 <script lang="ts">
 	import { started } from '$lib/stores';
+	import * as Tone from 'tone';
+
+	async function start() {
+		await Tone.start();
+		$started = true;
+	}
 </script>
 
 <div class="flex h-full w-full">
@@ -8,6 +14,6 @@
 			<h1 class="text-3xl font-semibold tracking-tight">the0ther0ther</h1>
 			<small class="px-8 text-center text-xs italic text-muted-foreground">Please, explore</small>
 		</div>
-		<button class="p-8 font-bold text-white" on:click={() => ($started = true)}> Start </button>
+		<button class="p-8 font-bold text-white" on:click={start}> Start </button>
 	</div>
 </div>

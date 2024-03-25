@@ -93,3 +93,13 @@ export const flyAndScale = (
 		easing: cubicOut
 	};
 };
+
+export const random = (min: number, max: number) => {
+	const rnd = Math.floor(Math.random() * (max - min + 1)) + min;
+	return rnd;
+};
+
+export const random_float = (min: number, max: number) => {
+	const rnd = Math.random() * (max - min) + min;
+	return rnd;
+};

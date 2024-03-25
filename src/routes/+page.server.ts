@@ -1,7 +1,8 @@
 import { BOARD_ID, PAGE_SIZE, SOURCE_URL, BASE_URL } from '$env/static/private';
-import type { PinResponse } from '$lib/types';
+import type { PinResponse, RawAudioFiles } from '$lib/types';
 import type { Actions, ServerLoad } from '@sveltejs/kit';
 import { all_pins } from '$lib/stores';
+import { createSamplerUrls } from '$lib/server/utility';
 
 export const config: import('@sveltejs/adapter-vercel').Config = {
 	runtime: 'edge'
@@ -23,6 +24,16 @@ export const load: ServerLoad = async ({ fetch }) => {
 	);
 	const url = `${BASE_URL}?${searchParams.toString()}`;
 
+	const raw_audio_files: RawAudioFiles = import.meta.glob('/static/audio/*.mp3', {
+		query: '?url',
+		eager: true,
+		import: 'default'
+	});
+	const audio_files = Object.keys(raw_audio_files).map((key) => {
+		return key.split('/static/audio/')[1];
+	});
+
+	const urls = createSamplerUrls(audio_files);
 	try {
 		if (!SOURCE_URL || SOURCE_URL == '') throw new Error(`No source url`);
 		const res = await fetch(url);
@@ -32,7 +43,8 @@ export const load: ServerLoad = async ({ fetch }) => {
 			all_pins.update(() => [...init_pins]);
 			return {
 				pins: init_pins,
-				bookmark
+				bookmark,
+				urls
 			};
 		}
 	} catch (error) {
