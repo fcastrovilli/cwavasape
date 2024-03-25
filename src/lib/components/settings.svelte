@@ -30,7 +30,7 @@
 
 <div
 	use:draggable
-	class="absolute left-1/3 top-1/3 z-50 w-full max-w-xs space-y-2 rounded-3xl bg-black p-4 pb-6 outline outline-1 outline-white"
+	class="absolute left-5 top-10 z-50 w-full max-w-xs space-y-2 rounded-3xl bg-black p-4 pb-6 outline outline-1 outline-white"
 >
 	<div class="flex cursor-move justify-between">
 		<h3 class="pb-2 text-xl font-semibold">Settings</h3>
