@@ -2,7 +2,7 @@
 	import { Label } from '$lib/components/ui/label/index.js';
 	import { Switch } from '$lib/components/ui/switch/index.js';
 	import { draggable } from '@neodrag/svelte';
-	import { settings, show_settings, updateLocalStorage } from '$lib/stores';
+	import { audio_active, settings, show_settings, updateLocalStorage } from '$lib/stores';
 	import { Slider } from './ui/slider';
 	import Option from './option.svelte';
 	import { createEventDispatcher, onDestroy } from 'svelte';
@@ -12,6 +12,17 @@
 		dispatch('analyze');
 	}
 
+	$: {
+		if (analysis) {
+			if (
+				$settings.distinct_color !== undefined ||
+				$settings.negative !== undefined ||
+				$settings.positive !== undefined
+			) {
+				analyze();
+			}
+		}
+	}
 	onDestroy(() => {
 		updateLocalStorage('settings', $settings);
 	});
@@ -68,6 +79,32 @@
 			onValueChange={(e) => (($settings.paint_alpha = e[0]), analyze())}
 			min={0}
 			max={2000}
+			step={1}
+		/>
+	</Option>
+	<div class="justify-left flex items-center space-x-2 py-2">
+		<Switch id="positive" bind:checked={$settings.positive} />
+		<Label for="positive" class="font-semibold">Positive</Label>
+	</div>
+	<div class="justify-left flex items-center space-x-2 py-2">
+		<Switch id="negative" bind:checked={$settings.negative} />
+		<Label for="negative" class="font-semibold">Negative</Label>
+	</div>
+	<div class="justify-left flex items-center space-x-2 py-2">
+		<Switch id="distinctColors" bind:checked={$settings.distinct_color} />
+		<Label for="distinctColors" class="font-semibold">Distinct Colors</Label>
+	</div>
+	<hr />
+	<div class="flex items-center justify-center space-x-2 py-2">
+		<Switch id="audio" bind:checked={$audio_active} />
+		<Label for="audio" class="font-semibold">Audio</Label>
+	</div>
+	<Option label="Volume" settings_value={Math.round($settings.audio_volume)} unity="dB">
+		<Slider
+			value={[$settings.audio_volume]}
+			onValueChange={(e) => (($settings.audio_volume = e[0]), analyze())}
+			min={-99}
+			max={0}
 			step={1}
 		/>
 	</Option>

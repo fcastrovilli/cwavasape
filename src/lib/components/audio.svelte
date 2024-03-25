@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { scrollPosition } from '$lib/stores';
+	import { scrollPosition, settings } from '$lib/stores';
 	import type { RawAudioFiles } from '$lib/types';
 	import { random, random_float } from '$lib/utils';
 	import { onMount } from 'svelte';
@@ -15,16 +15,20 @@
 				urls: urls,
 				baseUrl: '/audio/'
 			});
-			sampler.volume.value = -5;
 			sampler.release = 1;
 		}
 	});
 
 	$: {
+		if (sampler?.loaded) {
+			sampler.volume.linearRampTo($settings.audio_volume, 0.1);
+		}
+	}
+
+	$: {
 		if (browser && sampler?.loaded && $scrollPosition >= 0) {
 			const random_note = random(1, 1000);
 			const random_length = random_float(0.1, 2.0);
-			console.log(random_note);
 			play(random_note, random_length);
 		}
 	}

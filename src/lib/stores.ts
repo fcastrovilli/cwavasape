@@ -6,6 +6,7 @@ export const all_pins = writable([] as PinResponse[]);
 export const bookmark = writable('');
 export const started = writable(false);
 export const show_settings = writable(false);
+export const audio_active = writable(true);
 export const settings = writable({
 	quality: '236x',
 	gaussian_radius: 1,
@@ -15,7 +16,8 @@ export const settings = writable({
 	positive: true,
 	negative: false,
 	opacity: 75,
-	random: false
+	random: false,
+	audio_volume: -6
 } as ui_settings);
 
 export const updateLocalStorage = (key: string, value: ui_settings) => {

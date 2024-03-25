@@ -10,7 +10,8 @@ let alias_settings: ui_settings = {
 	positive: true,
 	negative: false,
 	opacity: 75,
-	random: false
+	random: false,
+	audio_volume: -6
 };
 export async function analyze(url: string) {
 	if (!url) return;

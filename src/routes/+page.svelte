@@ -3,7 +3,7 @@
 	import { browser } from '$app/environment';
 	import { enhance } from '$app/forms';
 	import type { PinResponse, RawAudioFiles } from '$lib/types';
-	import { scrollPosition, settings, started } from '$lib/stores';
+	import { audio_active, scrollPosition, settings, started } from '$lib/stores';
 	import Audio from '$lib/components/audio.svelte';
 	export let data;
 	let urls: RawAudioFiles | undefined = data.urls;
@@ -104,7 +104,9 @@
 			<Canvas {images} />
 		{/if}
 	</div>
-	<Audio {urls} />
+	{#if $audio_active}
+		<Audio {urls} />
+	{/if}
 {:else}
 	<div class="flex h-screen items-center justify-center">
 		<p class="text-white">no data found</p>
