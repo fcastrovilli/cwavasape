@@ -10,7 +10,7 @@
 	let pins: PinResponse[] | undefined = data.pins;
 	let new_pins: PinResponse[] | undefined = pins;
 	let images: HTMLImageElement[] = [];
-	let gap: number = 15;
+	let gap: number = 10;
 	$: {
 		if (new_pins && new_pins.length > 0 && browser) {
 			new_pins.forEach((pin, i) => {
