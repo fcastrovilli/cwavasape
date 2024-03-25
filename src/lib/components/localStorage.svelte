@@ -9,7 +9,19 @@
 			if (!storedSettings) {
 				updateLocalStorage('settings', $settings);
 			} else {
-				$settings = JSON.parse(storedSettings);
+				const storedSettingsObj = JSON.parse(storedSettings);
+				const settingsObj = $settings;
+				const keys = Object.keys(settingsObj);
+				for (const key of keys) {
+					if (typeof storedSettingsObj[key] === 'undefined') {
+						console.warn(
+							`Mismatching settings key "${key}" in localStorage. Using default settings.`
+						);
+						updateLocalStorage('settings', $settings);
+						break;
+					}
+				}
+				$settings = storedSettingsObj;
 			}
 		}
 	});
