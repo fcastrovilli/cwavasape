@@ -1,7 +1,6 @@
 import { BOARD_ID, PAGE_SIZE, SOURCE_URL, BASE_URL } from '$env/static/private';
 import type { PinResponse, RawAudioFiles } from '$lib/types';
 import type { Actions, ServerLoad } from '@sveltejs/kit';
-import { all_pins } from '$lib/stores';
 import { createSamplerUrls } from '$lib/server/utility';
 
 export const config: import('@sveltejs/adapter-vercel').Config = {
@@ -40,7 +39,6 @@ export const load: ServerLoad = async ({ fetch }) => {
 		if (res.ok) {
 			const bookmark = (await res.clone().json()).resource_response.bookmark;
 			const init_pins: PinResponse[] = (await res.json()).resource_response.data;
-			all_pins.update(() => [...init_pins]);
 			return {
 				pins: init_pins,
 				bookmark,
@@ -81,7 +79,6 @@ export const actions: Actions = {
 			if (res.ok) {
 				const new_bookmark = (await res.clone().json()).resource_response.bookmark;
 				const new_pins: PinResponse[] = (await res.json()).resource_response.data;
-				all_pins.update((pins) => [...pins, ...new_pins]);
 				return {
 					new_pins,
 					new_bookmark
