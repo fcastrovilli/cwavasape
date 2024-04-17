@@ -1,8 +1,10 @@
 import { writable } from 'svelte/store';
-import type { PinResponse, ui_settings } from '$lib/types';
+import type { ui_settings } from '$lib/types';
+export const BASE_URL = 'https://www.pinterest.com/resource/UserPinsResource/get/';
+
+export const is_debug = writable(false);
 
 export const scrollPosition = writable(0);
-export const all_pins = writable([] as PinResponse[]);
 export const bookmark = writable('');
 export const started = writable(false);
 export const show_settings = writable(false);
@@ -17,7 +19,8 @@ export const settings = writable({
 	negative: false,
 	opacity: 75,
 	random: false,
-	audio_volume: -6
+	audio_volume: -6,
+	audio_threshold: -10
 } as ui_settings);
 
 export const updateLocalStorage = (key: string, value: ui_settings) => {

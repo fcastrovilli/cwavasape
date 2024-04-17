@@ -1,25 +1,25 @@
-import { SOURCE_URL, BOARD_ID, PAGE_SIZE, BASE_URL } from '$env/static/private';
+import { PINTEREST_USERNAME } from '$env/static/private';
+import { BASE_URL } from '$lib/stores';
 import type { PinResponse } from '$lib/types';
 
 export const get_pins = async (last_bookmark: string, init: boolean = false) => {
 	let pins: PinResponse[] = [];
 	let bookmark: string = '';
 	const searchParams = new URLSearchParams();
-	searchParams.append('source_url', SOURCE_URL);
+	searchParams.append('source_url', `/${PINTEREST_USERNAME}/pins/`);
 	searchParams.append(
 		'data',
 		JSON.stringify({
 			options: {
-				board_id: BOARD_ID,
-				page_size: Number(PAGE_SIZE),
+				is_own_profile_pins: false,
+				username: PINTEREST_USERNAME,
 				bookmarks: [last_bookmark]
 			}
 		})
 	);
 	const url = `${BASE_URL}?${searchParams.toString()}`;
-
 	try {
-		if (!SOURCE_URL || SOURCE_URL == '') throw new Error(`No source url`);
+		if (!PINTEREST_USERNAME || PINTEREST_USERNAME == '') throw new Error(`No source url`);
 		const res = await fetch(url);
 		if (res.ok) {
 			bookmark = (await res.clone().json()).resource_response.bookmark || '';

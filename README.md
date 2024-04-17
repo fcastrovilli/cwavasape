@@ -4,13 +4,24 @@ This is a Sveltekit project designed to scrape data from Pinterest boards and vi
 
 [`image-js`](https://github.com/image-js/image-js) and [`resemblejs`](https://github.com/rsmbl/Resemble.js) are involved for image analysis.
 
+[`tonejs`](https://github.com/Tonejs/Tone.js) is used for audio management.
+
+Audio samples are kindly provided by [`Maria Virgin`](https://linktr.ee/mariavirgin) and [`Dittofused`](https://www.instagram.com/dittofuso/).
+
+> [!TIP]
+> Write me to add your own audio samples.
+
 ## Usage
 
-The first thing you should do is to set up the necessary environment variables. You can do this by creating a [`.env`](command:_github.copilot.openRelativePath?%5B%22.env%22%5D '.env') file based on the provided [`.env.example`](command:_github.copilot.openRelativePath?%5B%22.env.example%22%5D '.env.example') file.
+The first step is to create a `.env` file in the root directory of the project and add the following variable:
 
-_See [Pinterest Calls](#pinterest-calls) section for more information about the required environment variables._
+```sh
+PINTEREST_USERNAME="your-pinterest-username"
+```
 
-Start installing the dependencies:
+Replace `your-pinterest-username` with the username of the user you want to scrape.
+
+Install the dependencies:
 
 ```sh
 pnpm install
@@ -26,14 +37,5 @@ pnpm run dev
 
 The application is designed to be deployed to [Vercel](https://vercel.com) and the necessary configuration files are included. Simply fork this repository and add it to your Vercel account.
 
-## Pinterest Calls
-
-This is an example of query that Pinterest itself uses to get paginated data from a board:
-
-```sh
-https://www.pinterest.com/resource/BoardFeedResource/get/?source_url=/---USERNAME---/---BOARDNAME---/&data={"options":{"board_id":"BOARD_ID","page_size":10}}
-```
-
-The `---USERNAME---` and `---BOARDNAME---` are the username and the board name of the user you want to scrape.
-
-To get the board id you can visit the board you want to scrape and open the `Network` tab from `Developer Tools`. Refresh the page to clear all results and filter them by `board_id`. Select a result to finally reach the board id in the `Payload` tab.
+> [!IMPORTANT]
+> Don't forget to set the `PINTEREST_USERNAME` environment variables in the Vercel project settings.

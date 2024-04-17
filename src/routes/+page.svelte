@@ -3,22 +3,23 @@
 	import { browser } from '$app/environment';
 	import { enhance } from '$app/forms';
 	import type { PinResponse, RawAudioFiles } from '$lib/types';
-	import { audio_active, scrollPosition, settings, started } from '$lib/stores';
+	import { audio_active, scrollPosition, settings, started, is_debug } from '$lib/stores';
 	import Audio from '$lib/components/audio.svelte';
+	import AudioIn from '$lib/components/audio_in.svelte';
 	export let data;
 	let urls: RawAudioFiles | undefined = data.urls;
 	let pins: PinResponse[] | undefined = data.pins;
 	let new_pins: PinResponse[] | undefined = pins;
 	let images: HTMLImageElement[] = [];
-	let gap: number = 10;
+	let gap: number = 20;
 	$: {
 		if (new_pins && new_pins.length > 0 && browser) {
 			new_pins.forEach((pin, i) => {
 				const img = new Image();
 				img.src = pin.images[$settings.quality as keyof typeof pin.images].url;
 				img.id = i.toString();
-				img.width = pin.images['236x'].width;
-				img.height = pin.images['236x'].height;
+				img.width = pin.images[$settings.quality as keyof typeof pin.images].width;
+				img.height = pin.images[$settings.quality as keyof typeof pin.images].height;
 				images.push(img);
 			});
 		}
@@ -104,6 +105,9 @@
 			<Canvas {images} />
 		{/if}
 	</div>
+	{#if $is_debug}
+		<AudioIn />
+	{/if}
 	{#if $audio_active}
 		<Audio {urls} />
 	{/if}
