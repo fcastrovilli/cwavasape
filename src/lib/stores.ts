@@ -2,6 +2,8 @@ import { writable } from 'svelte/store';
 import type { ui_settings } from '$lib/types';
 export const BASE_URL = 'https://www.pinterest.com/resource/UserPinsResource/get/';
 
+export const is_debug = writable(false);
+
 export const scrollPosition = writable(0);
 export const bookmark = writable('');
 export const started = writable(false);

@@ -4,7 +4,8 @@
 		settings,
 		updateLocalStorage,
 		show_settings,
-		audio_active
+		audio_active,
+		is_debug
 	} from '$lib/stores';
 	import { onMount } from 'svelte';
 	import { analyze } from '$lib/utils';
@@ -83,7 +84,9 @@
 		<ContextMenu.Separator />
 		<ContextMenu.CheckboxItem bind:checked={analysis}>Analyze</ContextMenu.CheckboxItem>
 		<ContextMenu.CheckboxItem bind:checked={$audio_active}>Audio</ContextMenu.CheckboxItem>
+		<ContextMenu.Separator />
 		<ContextMenu.CheckboxItem bind:checked={$show_settings}>Settings</ContextMenu.CheckboxItem>
+		<ContextMenu.CheckboxItem bind:checked={$is_debug}>Debug</ContextMenu.CheckboxItem>
 		<!-- <ContextMenu.Separator />
 		<ContextMenu.RadioGroup
 			bind:value
