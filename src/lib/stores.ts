@@ -17,7 +17,8 @@ export const settings = writable({
 	negative: false,
 	opacity: 75,
 	random: false,
-	audio_volume: -6
+	audio_volume: -6,
+	audio_threshold: -10
 } as ui_settings);
 
 export const updateLocalStorage = (key: string, value: ui_settings) => {

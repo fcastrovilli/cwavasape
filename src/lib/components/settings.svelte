@@ -108,4 +108,13 @@
 			step={1}
 		/>
 	</Option>
+	<Option label="Audio Threshold" settings_value={Math.round($settings.audio_threshold)} unity="dB">
+		<Slider
+			value={[$settings.audio_threshold]}
+			onValueChange={(e) => ($settings.audio_threshold = e[0])}
+			min={-100}
+			max={0}
+			step={1}
+		/>
+	</Option>
 </div>
