@@ -4,6 +4,13 @@ This is a Sveltekit project designed to scrape data from Pinterest boards and vi
 
 [`image-js`](https://github.com/image-js/image-js) and [`resemblejs`](https://github.com/rsmbl/Resemble.js) are involved for image analysis.
 
+[`tonejs`](https://github.com/Tonejs/Tone.js) is used for audio management.
+
+Audio samples are kindly provided by [`Maria Virgin`](https://linktr.ee/mariavirgin) and [`Dittofused`](https://www.instagram.com/dittofuso/).
+
+> [!TIP]
+> Write me to add your own audio samples.
+
 ## Usage
 
 The first step is to create a `.env` file in the root directory of the project and add the following variable:
